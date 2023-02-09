@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route::get('/threads', [ThreadController::class, 'index'])->name('threads.index');
+    Route::post('/threads', [ThreadController::class, 'create'])->name('threads.create');
 });
 
 require __DIR__.'/auth.php';
