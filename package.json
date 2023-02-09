@@ -19,6 +19,6 @@
     },
     "dependencies": {
         "daisyui": "^2.50.0",
-        "vue-final-modal": "^4.0.1"
+        "vue-final-modal": "^3.4.11"
     }
 }
