@@ -29,7 +29,7 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        return inertia('Threads/CreateThread');
+        return inertia('Threads/ThreadCreate');
     }
 
     /**

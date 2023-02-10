@@ -7,7 +7,7 @@
             </a>
         </div>
         <nav class="flex-grow lg:block px-4 pb-4 lg:pb-0 lg:overflow-y-auto z-10">
-            <!-- <NavLink :href="route('threads.index')" :active="route().current('threads.index')">Threads</NavLink> -->
+            <NavLink :href="route('threads.index')" :active="route().current('threads.index')">Threads</NavLink>
         </nav>
     </div>
 </template>
