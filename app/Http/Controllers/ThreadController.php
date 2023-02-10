@@ -8,15 +8,37 @@ use Illuminate\Support\Facades\Auth;
 
 class ThreadController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $threads = Thread::all();
+        $threads = Thread::with('user')->get();
+
         return inertia('Threads/Threads', [
             'threads' => $threads
         ]);
     }
 
-    public function create(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
         $thread = new Thread;
         $thread->title = $request->input('title');
@@ -25,29 +47,49 @@ class ThreadController extends Controller
         $thread->save();
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $thread = Thread::find($id);
-        return inertia('threads.edit', [
-            'thread' => $thread
-        ]);
+        //
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
-        $thread = Thread::find($id);
-        $thread->title = $request->input('title');
-        $thread->body = $request->input('body');
-        $thread->save();
-
-        return redirect()->route('threads.index')->with('success', 'Thread updated successfully');
+        //
     }
 
-    public function delete($id)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
     {
         $thread = Thread::find($id);
         $thread->delete();
-
-        return redirect()->route('threads.index')->with('success', 'Thread deleted successfully');
     }
 }
