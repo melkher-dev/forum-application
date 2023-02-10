@@ -29,7 +29,7 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Threads/CreateThread');
     }
 
     /**
@@ -45,6 +45,8 @@ class ThreadController extends Controller
         $thread->body = $request->input('body');
         $thread->user_id = Auth::id();
         $thread->save();
+
+        return redirect()->route('threads.index');
     }
 
     /**

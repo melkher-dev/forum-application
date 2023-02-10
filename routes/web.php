@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'threads'], function () {
         Route::get('/', [ThreadController::class, 'index'])->name('threads.index');
+        Route::get('/create', [ThreadController::class, 'create'])->name('threads.create');
         Route::post('/', [ThreadController::class, 'store'])->name('threads.store');
         Route::delete('/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
     });
