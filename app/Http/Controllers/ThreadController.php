@@ -68,7 +68,10 @@ class ThreadController extends Controller
      */
     public function edit($id)
     {
-        //
+        $thread = Thread::find($id);
+        return inertia('Threads/ThreadEdit', [
+            'thread' => $thread
+        ]);
     }
 
     /**
@@ -80,7 +83,12 @@ class ThreadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $thread = Thread::find($id);
+        $thread->title = $request->input('title');
+        $thread->body = $request->input('body');
+        $thread->save();
+
+        return redirect()->route('threads.index');
     }
 
     /**

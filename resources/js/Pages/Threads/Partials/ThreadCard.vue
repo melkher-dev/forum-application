@@ -16,6 +16,8 @@
                 <div v-if="$page.props.auth.user">
                     <div v-if="$page.props.auth.user.id === thread.user.id" class="card-actions justify-end">
                         <!-- delete button -->
+                        <Link :href="route('threads.edit', thread.id)" class="btn btn-outline btn-primary btn-sm">
+                        Edit</Link>
                         <button @click="deleteTread(thread.id)" class="btn btn-outline btn-error btn-sm">Delete</button>
                     </div>
                 </div>
@@ -25,7 +27,7 @@
 </template>
 
 <script setup>
-import { router } from "@inertiajs/vue3";
+import { Link, router } from "@inertiajs/vue3";
 
 const props = defineProps({
     thread: Object,
