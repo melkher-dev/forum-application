@@ -42,9 +42,6 @@ const deleteTread = (id) => {
     if (confirm('Are you sure want to delete this Thread?')) {
         router.delete(route('threads.destroy', id), {
             preserveScroll: true,
-            onSuccess: () => {
-                window.location.reload();
-            }
         });
     }
 }

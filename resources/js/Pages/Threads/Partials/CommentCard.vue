@@ -13,13 +13,30 @@
                         <h6>{{ comment.created_at }}</h6>
                     </div>
                 </div>
+                <div v-if="$page.props.auth.user">
+                    <div v-if="$page.props.auth.user.id === comment.user.id" class="card-actions justify-end">
+                        <!-- buttons -->
+                        <button @click="deleteComment(comment.id)"
+                            class="btn btn-outline btn-error btn-sm">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { router } from "@inertiajs/vue3";
+
 const props = defineProps({
     comment: Object,
 })
+
+const deleteComment = (id) => {
+    if (confirm('Are you sure want to delete this Comment?')) {
+        router.delete(route('comments.destroy', id), {
+            preserveScroll: true,
+        });
+    }
+}
 </script>
