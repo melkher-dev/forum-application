@@ -4,6 +4,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 
 /*
@@ -51,6 +52,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
         Route::put('/{thread}', [ThreadController::class, 'update'])->name('threads.update');
         Route::delete('/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
+    });
+
+    Route::group(['prefix' => 'comments'], function () {
+        Route::post('/', [CommentController::class, 'store'])->name('comments.store');
     });
 });
 

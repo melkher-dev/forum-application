@@ -7,11 +7,14 @@
                     <div class="card-actions justify-center">
                         <h2 class="card-title">{{ thread.title }}</h2>
                     </div>
-                    <div class="card-actions justify-center">
+                    <div class="card-actions start">
                         <h3>{{ thread.body }}</h3>
                     </div>
                     <div class="card-actions justify-end">
                         <h6><span style="color:blue">author: </span>{{ thread.user.name }}</h6>
+                    </div>
+                    <div class="card-actions justify-end">
+                        <h6>{{ thread.created_at }}</h6>
                     </div>
                 </div>
             </div>

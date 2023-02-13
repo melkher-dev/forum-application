@@ -60,8 +60,10 @@ class ThreadController extends Controller
     {
         $thread = Thread::with('user')->find($id);
 
+        $comments = $thread->comments()->with('user')->orderBy('created_at', 'asc')->get();
         return inertia('Threads/ThreadShow', [
-            'thread' => $thread
+            'thread' => $thread,
+            'comments' => $comments
         ]);
     }
 
