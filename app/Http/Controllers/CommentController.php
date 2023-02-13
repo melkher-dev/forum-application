@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Thread;
 use Illuminate\Http\Request;
-use App\Http\Requests\ThreadRequest;
-use Illuminate\Support\Facades\Auth;
 
-class ThreadController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +13,7 @@ class ThreadController extends Controller
      */
     public function index()
     {
-        $threads = Thread::with('user')->get();
-
-        return inertia('Threads/Threads', [
-            'threads' => $threads
-        ]);
+        //
     }
 
     /**
@@ -30,7 +23,7 @@ class ThreadController extends Controller
      */
     public function create()
     {
-        return inertia('Threads/ThreadCreate');
+        //
     }
 
     /**
@@ -39,15 +32,9 @@ class ThreadController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ThreadRequest $request)
+    public function store(Request $request)
     {
-        $thread = new Thread;
-        $thread->title = $request->input('title');
-        $thread->body = $request->input('body');
-        $thread->user_id = Auth::id();
-        $thread->save();
-
-        return redirect()->route('threads.index');
+        //
     }
 
     /**
@@ -69,10 +56,7 @@ class ThreadController extends Controller
      */
     public function edit($id)
     {
-        $thread = Thread::find($id);
-        return inertia('Threads/ThreadEdit', [
-            'thread' => $thread
-        ]);
+        //
     }
 
     /**
@@ -82,14 +66,9 @@ class ThreadController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ThreadRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $thread = Thread::find($id);
-        $thread->title = $request->input('title');
-        $thread->body = $request->input('body');
-        $thread->save();
-
-        return redirect()->route('threads.index');
+        //
     }
 
     /**
@@ -100,7 +79,6 @@ class ThreadController extends Controller
      */
     public function destroy($id)
     {
-        $thread = Thread::find($id);
-        $thread->delete();
+        //
     }
 }
