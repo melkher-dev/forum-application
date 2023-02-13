@@ -58,7 +58,11 @@ class ThreadController extends Controller
      */
     public function show($id)
     {
-        //
+        $thread = Thread::with('user')->find($id);
+
+        return inertia('Threads/ThreadShow', [
+            'thread' => $thread
+        ]);
     }
 
     /**

@@ -26,7 +26,7 @@ use App\Http\Controllers\ProfileController;
 //     ]);
 // });
 
-Route::get('/', function() {
+Route::get('/', function () {
     return redirect()->route('threads.index');
 });
 
@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ThreadController::class, 'index'])->name('threads.index');
         Route::get('/create', [ThreadController::class, 'create'])->name('threads.create');
         Route::post('/', [ThreadController::class, 'store'])->name('threads.store');
+        Route::get('/{thread}', [ThreadController::class, 'show'])->name('threads.show');
         Route::get('/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
         Route::put('/{thread}', [ThreadController::class, 'update'])->name('threads.update');
         Route::delete('/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
