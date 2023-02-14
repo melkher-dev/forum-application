@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\Vote;
 use App\Models\Thread;
+use App\Models\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Comment extends Model
+class Vote extends Model
 {
     use HasFactory;
 
@@ -20,7 +20,7 @@ class Comment extends Model
     protected $guarded = ['id'];
 
     /**
-     * Get the user that owns the Comment
+     * Get the user that owns the Vote
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -30,22 +30,22 @@ class Comment extends Model
     }
 
     /**
-     * Get the thread that owns the Comment
+     * Get the comment that owns the Vote
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function comment()
+    {
+        return $this->belongsTo(Comment::class);
+    }
+
+    /**
+     * Get the thread that owns the Vote
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function thread()
     {
         return $this->belongsTo(Thread::class);
-    }
-
-    /**
-     * Get all of the votes for the Comment
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function votes()
-    {
-        return $this->hasMany(Vote::class);
     }
 }

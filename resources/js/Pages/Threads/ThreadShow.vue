@@ -14,21 +14,51 @@
                             <h6><span style="color:blue">author: </span>{{ thread.user.name }}</h6>
                         </div>
                     </div>
+                    <div v-if="$page.props.auth.user" class="flex justify-end ">
+                        <!-- <div v-if="$page.props.auth.user.id != comment.user.id" class="card-actions justify-end"> -->
+                        <!-- buttons -->
+                        <!-- <h6 class="mt-1">Vote: </h6> -->
+                        <button @click="downVote(thread.id)" class="btn btn-outline btn-error btn-sm mx-1">
+                            <svg class="h-8 w-8 text-red-500" width="24" height="24" viewBox="0 0 24 24"
+                                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" />
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="18" y1="13" x2="12" y2="19" />
+                                <line x1="6" y1="13" x2="12" y2="19" />
+                            </svg>
+                        </button>
+                        <h6 class="mt-1 mx-2">votes: {{ threadVoteResult }}</h6>
+                        <button @click="upVote(thread.id)" class="btn btn-outline btn-primary btn-sm mx-1">
+                            <svg class="h-8 w-8 text-blue-500" width="24" height="24" viewBox="0 0 24 24"
+                                stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" />
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="18" y1="11" x2="12" y2="5" />
+                                <line x1="6" y1="11" x2="12" y2="5" />
+                            </svg>
+                        </button>
+                        <!-- </div> -->
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="flex justify-end m-3">
-            <textarea v-model="form.body" class="textarea textarea-primary w-2/3 textarea-lg"
-                placeholder="Write your comment"></textarea>
+        <!-- comment input -->
+        <div v-if="$page.props.auth.user">
+            <div class="flex justify-end m-3">
+                <textarea v-model="form.body" class="textarea textarea-primary w-96 textarea-lg"
+                    placeholder="Write your comment"></textarea>
 
-            <!-- <InputError :message="form.errors.body" class="mt-2" /> -->
-        </div>
-        <div class="flex justify-end mx-3">
-            <button @click="submit" class="btn btn-outline btn-primary btn-sm">Save</button>
+                <!-- <InputError :message="form.errors.body" class="mt-2" /> -->
+            </div>
+            <div class="flex justify-end mx-3">
+                <button @click="submit" class="btn btn-outline btn-primary btn-sm">Save</button>
+            </div>
         </div>
         <!-- comments -->
         <div v-for="comment in comments" :key="comment.id">
-            <comment-card :comment="comment" />
+            <comment-card :comment="comment" :commentVoteResult="commentVoteResult" />
         </div>
     </authenticated-layout>
 </template>
@@ -36,11 +66,14 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import CommentCard from "@/Pages/Threads/Partials/CommentCard.vue";
-import { useForm } from "@inertiajs/vue3";
+import { useForm, router } from "@inertiajs/vue3";
+import { isIntegerKey } from "@vue/shared";
 
 const props = defineProps({
     thread: Object,
     comments: Object,
+    commentVoteResult: Number,
+    threadVoteResult: Number,
 })
 
 const form = useForm({
@@ -55,5 +88,17 @@ const submit = () => {
             form.reset('body')
         }
     })
+}
+
+const upVote = (id) => {
+    router.post(route('votes.upvote.thread', id), {
+        preserveScroll: true,
+    });
+}
+
+const downVote = (id) => {
+    router.post(route('votes.downvote.thread', id), {
+        preserveScroll: true,
+    });
 }
 </script>

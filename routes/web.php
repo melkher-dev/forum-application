@@ -3,6 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\VoteController;
 use App\Http\Controllers\ThreadController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
@@ -31,6 +32,9 @@ Route::get('/', function () {
     return redirect()->route('threads.index');
 });
 
+Route::get('/', [ThreadController::class, 'index'])->name('threads.index');
+Route::get('threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
+
 // Route::get('/threads', function () {
 //     return Inertia::render('Threads/Threads');
 // })->middleware(['auth', 'verified'])->name('threads.index');
@@ -45,18 +49,25 @@ Route::middleware('auth')->group(function () {
     // Route::delete('/threads', [ThreadController::class, 'delete'])->name('thread-delete');
 
     Route::group(['prefix' => 'threads'], function () {
-        Route::get('/', [ThreadController::class, 'index'])->name('threads.index');
         Route::get('/create', [ThreadController::class, 'create'])->name('threads.create');
         Route::post('/', [ThreadController::class, 'store'])->name('threads.store');
-        Route::get('/{thread}', [ThreadController::class, 'show'])->name('threads.show');
         Route::get('/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
         Route::put('/{thread}', [ThreadController::class, 'update'])->name('threads.update');
         Route::delete('/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
+        // Route::post('/{thread}/upvote', [VoteController::class, 'upvoteThread'])->name('votes.upvote.thread');
+        // Route::post('/{thread}/downvote', [VoteController::class, 'downvoteThread'])->name('votes.downvote.thread');
     });
 
     Route::group(['prefix' => 'comments'], function () {
         Route::post('/', [CommentController::class, 'store'])->name('comments.store');
         Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    });
+
+    Route::group(['prefix' => 'votes'], function () {
+        Route::post('/{comment}/upvote.comment', [VoteController::class, 'upvoteComment'])->name('votes.upvote.comment');
+        Route::post('/{comment}/downvote.comment', [VoteController::class, 'downvoteComment'])->name('votes.downvote.comment');
+        Route::post('/{thread}/upvote.thread', [VoteController::class, 'upvoteThread'])->name('votes.upvote.thread');
+        Route::post('/{thread}/downvote.tread', [VoteController::class, 'downvoteThread'])->name('votes.downvote.thread');
     });
 });
 
