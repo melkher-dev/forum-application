@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Vote;
-use App\Models\Thread;
-use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class VoteController extends Controller
@@ -35,9 +33,41 @@ class VoteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($voteableModel, $voteableType, $voteableId)
     {
-        //
+        $userVote = auth()->user()->votes()->where('voteable_id', $voteableId)->first();
+
+        if ($userVote && $userVote->type == $voteableType) {
+            $userVote->delete();
+            return back();
+        }
+
+        if ($userVote && $userVote->type !== $voteableType) {
+            $userVote->delete();
+            return back();
+        }
+
+        Vote::updateOrCreate(
+            [
+                'user_id' => auth()->user()->id,
+                'voteable_id' => $voteableId,
+                'voteable_type' => $voteableModel,
+            ],
+            [
+                'type' => $voteableType
+            ]
+        );
+
+        return back();
+    }
+
+    public function votes($voteableId)
+    {
+        $voteUp = Vote::where('voteable_id', $voteableId)->where('type', 'upvote')->count();
+        $voteDown = Vote::where('voteable_id', $voteableId)->where('type', 'downvote')->count();
+        $voteResult = $voteUp - $voteDown;
+
+        return $voteResult;
     }
 
     /**
@@ -83,67 +113,5 @@ class VoteController extends Controller
     public function destroy(Vote $vote)
     {
         //
-    }
-
-    /**
-     * upvoteComment
-     *
-     * @param  mixed $request
-     * @param  mixed $model
-     * @return void
-     */
-    public function upvoteComment(Comment $comment)
-    {
-        $vote = new Vote();
-        $vote->type = 'up';
-        $vote->user_id = auth()->user()->id;
-        $vote->comment_id = $comment->id;
-        $vote->save();
-    }
-
-    /**
-     * downvoteComment
-     *
-     * @param  mixed $request
-     * @param  mixed $model
-     * @return void
-     */
-    public function downvoteComment(Comment $comment)
-    {
-        $vote = new Vote();
-        $vote->type = 'down';
-        $vote->user_id = auth()->user()->id;
-        $vote->comment_id = $comment->id;
-        $vote->save();
-    }
-
-    /**
-     * upvoteThread
-     *
-     * @param  mixed $request
-     * @return void
-     */
-    public function upvoteThread(Thread $thread)
-    {
-        $vote = new Vote();
-        $vote->type = 'up';
-        $vote->user_id = auth()->user()->id;
-        $vote->thread_id = $thread->id;
-        $vote->save();
-    }
-
-    /**
-     * downvoteThread
-     *
-     * @param  mixed $request
-     * @return void
-     */
-    public function downvoteThread(Thread $thread)
-    {
-        $vote = new Vote();
-        $vote->type = 'down';
-        $vote->user_id = auth()->user()->id;
-        $vote->thread_id = $thread->id;
-        $vote->save();
     }
 }

@@ -61,22 +61,10 @@ class ThreadController extends Controller
     {
         $thread = Thread::with('user')->find($id);
 
-        $commentVote = Comment::where('thread_id', $id)->first();
-        $commentVoteUp = $commentVote->votes()->where('comment_id', $commentVote->id)->where('type', 'up')->count();
-        $commentVoteDown = $commentVote->votes()->where('comment_id', $commentVote->id)->where('type', 'down')->count();
-        $commentVoteResult = $commentVoteUp - $commentVoteDown;
-
-        $threadVote = Thread::find($id);
-        $threadVoteUp = $threadVote->votes()->where('thread_id', $threadVote->id)->where('type', 'up')->count();
-        $threadVoteDown = $threadVote->votes()->where('thread_id', $threadVote->id)->where('type', 'down')->count();
-        $threadVoteResult = $threadVoteUp - $threadVoteDown;
-
         $comments = $thread->comments()->with('user')->orderBy('created_at', 'asc')->get();
         return inertia('Threads/ThreadShow', [
             'thread' => $thread,
             'comments' => $comments,
-            'commentVoteResult' => $commentVoteResult,
-            'threadVoteResult' => $threadVoteResult
         ]);
     }
 

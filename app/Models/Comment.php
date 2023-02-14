@@ -42,10 +42,10 @@ class Comment extends Model
     /**
      * Get all of the votes for the Comment
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function votes()
     {
-        return $this->hasMany(Vote::class);
+        return $this->morphMany(Vote::class, 'voteable');
     }
 }

@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Models\Thread;
-use App\Models\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -30,22 +28,10 @@ class Vote extends Model
     }
 
     /**
-     * Get the comment that owns the Vote
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * Get all of the owning voteable models.
      */
-    public function comment()
+    public function voteable()
     {
-        return $this->belongsTo(Comment::class);
-    }
-
-    /**
-     * Get the thread that owns the Vote
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function thread()
-    {
-        return $this->belongsTo(Thread::class);
+        return $this->morphTo();
     }
 }

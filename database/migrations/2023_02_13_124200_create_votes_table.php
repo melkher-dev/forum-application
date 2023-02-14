@@ -15,16 +15,13 @@ return new class extends Migration
     {
         Schema::create('votes', function (Blueprint $table) {
             $table->unsignedBigInteger('id', true);
-            $table->enum('type', ['up', 'down']);
+            $table->enum('type', ['upvote', 'downvote']);
 
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
 
-            $table->unsignedBigInteger('thread_id')->nullable();
-            $table->foreign('thread_id')->references('id')->on('threads')->onDelete('cascade')->onUpdate('cascade');
-
-            $table->unsignedBigInteger('comment_id')->nullable();
-            $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('voteable_id');
+            $table->string('voteable_type');
 
             $table->timestamps();
         });

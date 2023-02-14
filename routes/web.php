@@ -54,8 +54,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
         Route::put('/{thread}', [ThreadController::class, 'update'])->name('threads.update');
         Route::delete('/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
-        // Route::post('/{thread}/upvote', [VoteController::class, 'upvoteThread'])->name('votes.upvote.thread');
-        // Route::post('/{thread}/downvote', [VoteController::class, 'downvoteThread'])->name('votes.downvote.thread');
     });
 
     Route::group(['prefix' => 'comments'], function () {
@@ -64,10 +62,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['prefix' => 'votes'], function () {
-        Route::post('/{comment}/upvote.comment', [VoteController::class, 'upvoteComment'])->name('votes.upvote.comment');
-        Route::post('/{comment}/downvote.comment', [VoteController::class, 'downvoteComment'])->name('votes.downvote.comment');
-        Route::post('/{thread}/upvote.thread', [VoteController::class, 'upvoteThread'])->name('votes.upvote.thread');
-        Route::post('/{thread}/downvote.tread', [VoteController::class, 'downvoteThread'])->name('votes.downvote.thread');
+        Route::post('/{voteableModel}/{voteableType}/{voteableId}', [VoteController::class, 'store'])->name('votes.store');
+        Route::get('/{voteableId}', [VoteController::class, 'votes'])->name('get.votes');
     });
 });
 
