@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'votes'], function () {
         Route::post('/{voteableModel}/{voteableType}/{voteableId}', [VoteController::class, 'store'])->name('votes.store');
         Route::get('/{voteableId}', [VoteController::class, 'votes'])->name('get.votes');
+        Route::get('/{voteableId}/user', [VoteController::class, 'voteStatus'])->name('vote.status');
     });
 });
 

@@ -61,6 +61,12 @@ class VoteController extends Controller
         return back();
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function votes($voteableId)
     {
         $voteUp = Vote::where('voteable_id', $voteableId)->where('type', 'upvote')->count();
@@ -68,6 +74,23 @@ class VoteController extends Controller
         $voteResult = $voteUp - $voteDown;
 
         return $voteResult;
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function voteStatus($voteableId)
+    {
+        $userVote = auth()->user()->votes()->where('voteable_id', $voteableId)->first();
+
+        if ($userVote) {
+            return $userVote->type;
+        }
+
+        return 'none';
     }
 
     /**
