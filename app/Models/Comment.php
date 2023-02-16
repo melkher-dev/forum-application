@@ -30,16 +30,6 @@ class Comment extends Model
     }
 
     /**
-     * Get the thread that owns the Comment
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function thread()
-    {
-        return $this->belongsTo(Thread::class);
-    }
-
-    /**
      * Get all of the votes for the Comment
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -47,5 +37,23 @@ class Comment extends Model
     public function votes()
     {
         return $this->morphMany(Vote::class, 'voteable');
+    }
+
+    /**
+     * Get all of the owning commentable models.
+     */
+    public function commentable()
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Get all of the comments for the Comment
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

@@ -30,16 +30,6 @@ class Thread extends Model
     }
 
     /**
-     * Get all of the comments for the Thread
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function comments()
-    {
-        return $this->hasMany(Comment::class);
-    }
-
-    /**
      * Get all of the votes for the Thread
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
@@ -47,5 +37,15 @@ class Thread extends Model
     public function votes()
     {
         return $this->morphMany(Vote::class, 'voteable');
+    }
+
+    /**
+     * Get all of the comments for the Thread
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commentable');
     }
 }

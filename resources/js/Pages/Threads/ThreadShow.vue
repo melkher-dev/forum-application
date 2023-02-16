@@ -28,12 +28,14 @@
                     placeholder="Write your comment"></textarea>
             </div>
             <div class="flex justify-end mx-3">
-                <button @click="submit" class="btn btn-outline btn-primary btn-sm">Save</button>
+                <button @click="addCommentToThread" class="btn btn-outline btn-primary btn-sm">Save</button>
             </div>
         </div>
         <!-- comments -->
-        <div v-for="comment in comments" :key="comment.id">
-            <comment-card :model="thread" :comment="comment" :commentVoteResult="commentVoteResult" />
+        <div v-for="comment in threadComments" :key="comment.id">
+            <div>
+                <comment-card :model="thread" :comment="comment" :commentVoteResult="commentVoteResult" />
+            </div>
         </div>
     </authenticated-layout>
 </template>
@@ -42,39 +44,50 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import CommentCard from "@/Pages/Threads/Partials/CommentCard.vue";
 import VoteComponent from "@/Pages/Threads/Partials/VoteComponent.vue";
-import { useForm, router } from "@inertiajs/vue3";
-import { isIntegerKey } from "@vue/shared";
+import { useForm } from "@inertiajs/vue3";
+import axios from "axios";
+import { onMounted, ref } from "vue";
 
 const props = defineProps({
     thread: Object,
-    comments: Object,
+    // comments: Object,
     commentVoteResult: Number,
     threadVoteResult: Number,
 })
 
+let threadComments = ref({});
+
 const form = useForm({
-    thread_id: props.thread.id,
     body: '',
 })
 
-const submit = () => {
-    form.post(route('comments.store'), {
-        preserveScroll: true,
-        onSuccess: () => {
-            form.reset('body')
-        }
-    })
+const addCommentToThread = async () => {
+    await axios.post(route('comments.store', {
+        commentableModel: 'App\\Models\\Thread',
+        commentableId: props.thread.id,
+    }), form)
+        .then(getThreadComments())
 }
 
-const upVote = (id) => {
-    router.post(route('votes.upvote.thread', id), {
-        preserveScroll: true,
-    });
+const getThreadComments = async () => {
+    await axios.get(route('comments.comments', {
+        commentableId: props.thread.id,
+    }))
+        .then((response) => {
+            threadComments.value = response.data
+        })
 }
 
-const downVote = (id) => {
-    router.post(route('votes.downvote.thread', id), {
-        preserveScroll: true,
-    });
-}
+onMounted(() => {
+    getThreadComments()
+})
+
+// const addComment = () => {
+//     form.post(route('comments.store'), {
+//         preserveScroll: true,
+//         onSuccess: () => {
+//             form.reset('body')
+//         }
+//     })
+// }
 </script>

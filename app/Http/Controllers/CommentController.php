@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Termwind\Components\Dd;
 
 class CommentController extends Controller
 {
@@ -34,13 +35,25 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($commentableModel, $commentableId, Request $request)
     {
         $comment = new Comment();
         $comment->body = $request->body;
-        $comment->user_id = Auth::id();
-        $comment->thread_id = $request->thread_id;
+        $comment->user_id = auth()->user()->id;
+        $comment->commentable_type = $commentableModel;
+        $comment->commentable_id = $commentableId;
         $comment->save();
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function comments($commentableId)
+    {
+        $comments = Comment::where('commentable_id', $commentableId)->with('user')->orderBy('created_at', 'asc')->get();
+        return $comments;
     }
 
     /**

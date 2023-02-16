@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('comments', function (Blueprint $table) {
             $table->string('commentable_type')->after('user_id');
+            $table->unsignedBigInteger('commentable_id')->after('commentable_type');
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('comments', function (Blueprint $table) {
             $table->dropColumn('commentable_type');
+            $table->dropColumn('commentable_id');
         });
     }
 };

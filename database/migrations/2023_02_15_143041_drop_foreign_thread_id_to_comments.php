@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->renameColumn('thread_id', 'commentable_id');
+            $table->dropForeign('comments_thread_id_foreign');
+            $table->dropColumn('thread_id');
         });
     }
 
@@ -26,7 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('comments', function (Blueprint $table) {
-            $table->renameColumn('commentable_id', 'thread_id');
+            $table->unsignedBigInteger('thread_id');
         });
     }
 };

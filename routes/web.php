@@ -57,7 +57,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::group(['prefix' => 'comments'], function () {
-        Route::post('/', [CommentController::class, 'store'])->name('comments.store');
+        Route::get('/{commentableId}', [CommentController::class, 'comments'])->name('comments.comments');
+        Route::post('/{commentableModel}/{commentableId}', [CommentController::class, 'store'])->name('comments.store');
         Route::delete('/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
     });
 
