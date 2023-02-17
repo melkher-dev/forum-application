@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');
         Route::put('/{thread}', [ThreadController::class, 'update'])->name('threads.update');
         Route::delete('/{thread}', [ThreadController::class, 'destroy'])->name('threads.destroy');
+        Route::post('/search', [ThreadController::class, 'search'])->name('threads.search');
     });
 
     Route::group(['prefix' => 'comments'], function () {

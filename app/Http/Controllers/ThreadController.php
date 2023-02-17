@@ -110,4 +110,14 @@ class ThreadController extends Controller
         $thread = Thread::find($id);
         $thread->delete();
     }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $threads = Thread::where('title', 'like', "%{$search}%")->get();
+
+        return inertia('Search/Search', [
+            'threads' => $threads
+        ]);
+    }
 }
